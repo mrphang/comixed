@@ -52,7 +52,8 @@ deploy:
     keep-history: true
     overwrite: true
     on:
-        branch: /^release\/.*$/
+        all_branches: true
+        condition: ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} =~ (develop|^release\/.*$|master)
 
 cache:
     directories:
