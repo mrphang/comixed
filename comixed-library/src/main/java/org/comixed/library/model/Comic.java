@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.io.FilenameUtils;
 import org.comixed.library.adaptors.ArchiveType;
+import org.comixed.library.model.View.ComicList;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -48,12 +49,8 @@ import java.util.*;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "comics")
-@NamedQueries({
-  @NamedQuery(
-      name = "Comic.findAllUnreadByUser",
-      query =
-          "SELECT c FROM Comic c WHERE c.id NOT IN (SELECT r.comic.id FROM LastReadDate r WHERE r.user.id = :userId)")
-})
+@NamedQueries({@NamedQuery(name = "Comic.findAllUnreadByUser",
+                           query = "SELECT c FROM Comic c WHERE c.id NOT IN (SELECT r.comic.id FROM LastReadDate r WHERE r.user.id = :userId)")})
 public class Comic {
   @Transient @JsonIgnore private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -996,5 +993,14 @@ public class Comic {
             return p1.getFilename().compareTo(p2.getFilename());
           }
         });
+    }
+
+  @Transient
+  @JsonProperty("sortable_isue_number")
+  @JsonView(View.ComicList.class)
+  public String getSortableIssueNumber() {
+    final String result = "00000" + this.issueNumber;
+
+    return result.substring(result.length() - 5);
   }
 }
