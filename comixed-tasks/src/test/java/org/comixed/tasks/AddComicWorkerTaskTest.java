@@ -33,10 +33,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 
 @RunWith(MockitoJUnitRunner.class)
+@TestPropertySource(locations = "classpath:test-application.properties")
 @SpringBootTest
 public class AddComicWorkerTaskTest {
   private static final String TEST_CBZ_FILE = "src/test/resources/example.cbz";
@@ -172,5 +174,4 @@ public class AddComicWorkerTaskTest {
       Mockito.verify(comicFactory, Mockito.times(1)).getObject();
       Mockito.verify(comicFileHandler, Mockito.times(1)).loadComic(comic, false);
     }
-  }
 }
