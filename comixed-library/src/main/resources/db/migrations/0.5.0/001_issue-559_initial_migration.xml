@@ -280,7 +280,7 @@
         <constraints nullable="false"/>
       </column>
       <column name="filename"
-              type="varchar(128)">
+              type="varchar(256)">
         <constraints nullable="false"/>
       </column>
       <column name="hash"
